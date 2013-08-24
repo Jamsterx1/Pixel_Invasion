@@ -8,7 +8,7 @@ using namespace Feanwork;
 class Bullet : public Object
 {
 public:
-	Bullet(int _resourceID, int _xPos, int _yPos, sf::Vector2f _velocity, int _damage, EMITTERTYPE _type);
+	Bullet(int _resourceID, int _xPos, int _yPos, sf::Vector2f _velocity, float _damage, EMITTERTYPE _type);
 	~Bullet();
 
 	bool update(Game* _game);
@@ -17,12 +17,12 @@ public:
 	void setOwner(Object* _owner) { mOwner = _owner; }
 
 	int getDamage()
-		{ return mDamage; }
+		{ return (int)mDamage; }
 
 protected:
 	float		 mLifeCounter;
 	float		 mLife;
-	int			 mDamage;
+	float		 mDamage;
 	Emitter		 mEmitter;
 	sf::Vector2f mVelocity;
 	Object*		 mOwner;

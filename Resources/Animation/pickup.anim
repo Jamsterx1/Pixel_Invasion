@@ -1,0 +1,5 @@
+~Floating anim
+#Frame idle, 0, 0, 40, 40
+#Frame idle, 40, 0, 40, 40
+#Frame idle, 80, 0, 40, 40
+#Frame idle, 120, 0, 40, 40

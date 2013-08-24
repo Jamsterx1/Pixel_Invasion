@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "Player.h"
 
-Bullet::Bullet(int _resourceID, int _xPos, int _yPos, sf::Vector2f _velocity, int _damage, EMITTERTYPE _type) :
+Bullet::Bullet(int _resourceID, int _xPos, int _yPos, sf::Vector2f _velocity, float _damage, EMITTERTYPE _type) :
 	Object(_resourceID, _xPos, _yPos, true),
 	mEmitter(sf::Vector2f(_xPos, _yPos), sf::Vector2f(.0f, .0f), _type, false)
 {
@@ -44,7 +44,7 @@ void Bullet::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object
 		emitter->setPosition(mX, mY);
 		_game->addEmitter(&mEmitter);
 
-		if(static_cast<Enemy*>(_collision)->getHealth() - mDamage < 0)
+		if(static_cast<Enemy*>(_collision)->getHealth() - (int)mDamage < 0)
 			static_cast<Player*>(mOwner)->resetTimer();
 	}
 	destroy();

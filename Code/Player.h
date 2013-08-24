@@ -16,9 +16,10 @@ public:
 	bool render(Game* _game);
 	void collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object* _collision, Game* _game);
 
-	void switchWeapon(Weapon* _weapon);
-	void switchWeapon(int _resourceID, std::string _weapon, Object* _reloadVisual);
-	void resetTimer();
+	void	switchWeapon(Weapon* _weapon);
+	void	switchWeapon(int _resourceID, std::string _weapon, Object* _reloadVisual);
+	Weapon* getWeapon();
+	void	resetTimer();
 
 protected:
 	int		mHealth;

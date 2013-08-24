@@ -122,7 +122,7 @@ void Weapon::parseWeapon(std::string _weaponFile)
 			mClip     = p.getInt(0);
 		}
 		else if(keyword == "Damage")
-			mDamage = p.getInt(0);
+			mDamage = p.getFloat(0);
 		else if(keyword == "ShootPoint")
 		{
 			mShootPoint.x = p.getFloat(0);

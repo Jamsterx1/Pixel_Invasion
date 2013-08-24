@@ -8,7 +8,7 @@ using namespace Feanwork;
 class Ship : public Object
 {
 public:
-	Ship(int _resourceID, float _xPos, float _yPos, Object* _timer);
+	Ship(int _resourceID, float _xPos, float _yPos, Object* _timer, Object* _visual);
 	~Ship();
 
 	bool update(Game* _game);
@@ -18,6 +18,7 @@ public:
 protected:
 	float   mSpawnTime;
 	Object* mTimer;
+	Object* mVisual;
 };
 
 #endif

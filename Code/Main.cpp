@@ -17,10 +17,10 @@ int main()
 	Object* city = new Object(4, 0, 0, false);
 	Object* city1 = new Object(4, 980, 0, false);
 	Player* player = new Player(0, game->getWidth() / 2, game->getHeight() / 2, 100, killTimer);
-	Enemy* enemy = new Enemy(2, 300, 450, .0f, .0f, 100);
-	Ship* ship = new Ship(3, 5, 0, spawnTimer);
-	Ship* ship2 = new Ship(3, game->getWidth() - 495, 0, spawnTimer);
 	Object* reloadVisual = new Object(10, game->getWidth() / 2 - 120, game->getHeight() - 80, false, false);
+	Enemy* enemy = new Enemy(2, 300, 450, .0f, .0f, 100, reloadVisual);
+	Ship* ship = new Ship(3, 5, 0, spawnTimer, reloadVisual);
+	Ship* ship2 = new Ship(3, game->getWidth() - 495, 0, spawnTimer, reloadVisual);
 
 	objects.push_back(city);
 	objects.push_back(city1);
@@ -41,7 +41,9 @@ int main()
 	game->addCollisionCheck(ship);
 	game->addCollisionCheck(ship2);
 	game->setPlayer(player);
+
 	enemy->setUniqueType("Enemy");
+	player->setUniqueType("Player");
 
 	game->setDebugMode(true);
 	game->initMenu(objects);

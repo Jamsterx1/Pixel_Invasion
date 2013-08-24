@@ -1,5 +1,6 @@
 #include "Timer.h"
 #include "Feanwork/Game.h"
+#include "Player.h"
 #include <sstream>
 
 Timer::Timer(int _resourceID, float _xPos, float _yPos, std::string _anim, bool _active, std::string _name) :
@@ -27,6 +28,7 @@ bool Timer::update(Game* _game)
 		ss << "Wave: " << mRound;
 		static_cast<Text*>(_game->getInterface()->getInterface(0, "waveText"))->setString(ss.str());
 		mRoundSet = true;
+		static_cast<Player*>(_game->getPlayer())->getWeapon()->decreaseDamage();
 	}
 
 	if(Animation::hasLooped())

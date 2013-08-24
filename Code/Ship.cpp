@@ -4,11 +4,12 @@
 #include "Enemy.h"
 #include "Timer.h"
 
-Ship::Ship(int _resourceID, float _xPos, float _yPos, Object* _timer) :
+Ship::Ship(int _resourceID, float _xPos, float _yPos, Object* _timer, Object* _visual) :
 	Object(_resourceID, _xPos, _yPos, true)
 {
 	mSpawnTime = .0f;
 	mTimer	   = _timer;
+	mVisual	   = _visual;
 }
 
 Ship::~Ship()
@@ -30,7 +31,7 @@ bool Ship::update(Game* _game)
 			float xRand = random->rand_range(-0.2f, 0.2f);
 			float yRand = random->rand_range(0.3f, 0.4f);
 
-			enemies[i] = new Enemy(2, mX + 196, mY + 193, xRand, yRand, 100);
+			enemies[i] = new Enemy(2, mX + 196, mY + 193, xRand, yRand, 100, mVisual);
 			enemies[i]->setUniqueType("Enemy");
 			enemies[i]->ignore(_game->getPlayer());
 			_game->pushObject(enemies[i]);

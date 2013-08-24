@@ -116,6 +116,11 @@ void Player::switchWeapon(int _resourceID, std::string _weapon, Object* _reloadV
 	mWeapon->setOwner(this);
 }
 
+Weapon* Player::getWeapon()
+{
+	return mWeapon;
+}
+
 void Player::resetTimer()
 {
 	static_cast<Timer*>(mTimer)->reset();

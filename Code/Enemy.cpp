@@ -3,16 +3,18 @@
 #include "Feanwork/Random.h"
 #include "Bullet.h"
 #include "Player.h"
+#include "WeaponPickup.h"
 
-Enemy::Enemy(int _resourceID, float _xPos, float _yPos, float _xVel, float _yVel, int _maxHealth) :
+Enemy::Enemy(int _resourceID, float _xPos, float _yPos, float _xVel, float _yVel, int _maxHealth, Object* _visual) :
 	Object(_resourceID, _xPos, _yPos, true),
 	Animation(this, "Resources/Animation/enemy.anim", .05f)
 {
-	mHealth	   = _maxHealth;
-	mHealthMax = _maxHealth;
-	mVelocityX = _xVel;
-	mVelocityY = _yVel;
-	mAIState   = AISTATE_Pursue;
+	mHealth		  = _maxHealth;
+	mHealthMax	  = _maxHealth;
+	mVelocityX	  = _xVel;
+	mVelocityY	  = _yVel;
+	mAIState	  = AISTATE_Pursue;
+	mReloadVisual = _visual;
 }
 
 Enemy::~Enemy()
@@ -22,7 +24,17 @@ Enemy::~Enemy()
 bool Enemy::update(Game* _game)
 {
 	if(mHealth <= 0)
+	{
 		destroy();
+		/*Random* random = Random::get_singleton();
+		int rand = (int)random->rand_range(1, 1);
+
+		/*if(rand == 1)
+		{*/
+			WeaponPickup* pickup = new WeaponPickup(mX, mY, mReloadVisual);
+			_game->pushObject(pickup);
+		//}
+	}
 
 	if(mAIState == AISTATE_Pursue)
 	{
@@ -79,11 +91,11 @@ void Enemy::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object*
 	if(_collision->getUniqueType() == "Bullet")
 	{
 		Bullet* bullet = static_cast<Bullet*>(_collision);
-		damage(bullet->getDamage());
+		damage(bullet->getDamage(), _game);
 	}
 }
 
-void Enemy::damage(int _amount)
+void Enemy::damage(int _amount, Game* _game)
 {
 	mHealth -= _amount;	
 }
