@@ -8,3 +8,6 @@
 #Resource 7, Sprites/bullet.png
 #Resource 8, Sprites/gun.png
 #Resource 9, Sprites/pistolPickup.png
+#Resource 10, Sprites/reloading.png
+#Resource 11, Sprites/killTimer.png
+#Resource 12, Sprites/spawnTimer.png

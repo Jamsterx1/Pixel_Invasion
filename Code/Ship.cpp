@@ -2,11 +2,13 @@
 #include "Feanwork/Game.h"
 #include "Feanwork/Random.h"
 #include "Enemy.h"
+#include "Timer.h"
 
-Ship::Ship(int _resourceID, float _xPos, float _yPos) :
+Ship::Ship(int _resourceID, float _xPos, float _yPos, Object* _timer) :
 	Object(_resourceID, _xPos, _yPos, true)
 {
 	mSpawnTime = .0f;
+	mTimer	   = _timer;
 }
 
 Ship::~Ship()
@@ -15,6 +17,8 @@ Ship::~Ship()
 
 bool Ship::update(Game* _game)
 {
+	if(mSpawnTime < 7.2f && mSpawnTime > 6.8f)
+		static_cast<Timer*>(mTimer)->reset();
 	if(mSpawnTime >= 10.f)
 	{
 		mSpawnTime = .0f;

@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "Feanwork/Game.h"
 #include "Enemy.h"
+#include "Player.h"
 
 Bullet::Bullet(int _resourceID, int _xPos, int _yPos, sf::Vector2f _velocity, int _damage, EMITTERTYPE _type) :
 	Object(_resourceID, _xPos, _yPos, true),
@@ -42,6 +43,7 @@ void Bullet::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object
 		Emitter* emitter = &mEmitter;
 		emitter->setPosition(mX, mY);
 		_game->addEmitter(&mEmitter);
+		static_cast<Player*>(mOwner)->resetTimer();
 	}
 	destroy();
 }

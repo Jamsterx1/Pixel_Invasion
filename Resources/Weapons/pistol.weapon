@@ -1,6 +1,6 @@
 #Name Pistol
 #ShootRate 0.3
 #ClipSize 10
-#Damage 50
+#Damage 34
 #ShootPoint 12, 32
-#ReloadTime 8
+#ReloadTime 5.2

@@ -1,13 +1,15 @@
 #include "Player.h"
 #include "Feanwork/Game.h"
+#include "Timer.h"
 
-Player::Player(int _resourceID, float _xPos, float _yPos, int _maxHealth) :
+Player::Player(int _resourceID, float _xPos, float _yPos, int _maxHealth, Object* _timer) :
 	Object(_resourceID, _xPos, _yPos, false),
 	Animation(this, "Resources/Animation/player.anim")
 {
 	mHealth	     = _maxHealth;
 	mHealthMax   = _maxHealth;
 	mDead	     = false;
+	mTimer		 = _timer;
 }
 
 Player::~Player()
@@ -75,6 +77,9 @@ bool Player::update(Game* _game)
 		mWeapon->update(_game);
 	}
 
+	if(static_cast<Timer*>(mTimer)->hasLooped())
+		; // Lose!
+
 	Animation::update(_game);
 	Object::update(_game);
 	return true;
@@ -105,8 +110,13 @@ void Player::switchWeapon(Weapon* _weapon)
 	mWeapon->setOwner(this);
 }
 
-void Player::switchWeapon(int _resourceID, std::string _weapon)
+void Player::switchWeapon(int _resourceID, std::string _weapon, Object* _reloadVisual)
 {
-	mWeapon = new Weapon(_resourceID, mX, mY, _weapon);
+	mWeapon = new Weapon(_resourceID, mX, mY, _weapon, _reloadVisual);
 	mWeapon->setOwner(this);
+}
+
+void Player::resetTimer()
+{
+	static_cast<Timer*>(mTimer)->reset();
 }

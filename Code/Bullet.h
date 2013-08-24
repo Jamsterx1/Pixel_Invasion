@@ -14,6 +14,7 @@ public:
 	bool update(Game* _game);
 	bool render(Game* _game);
 	void collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object* _collision, Game* _game);
+	void setOwner(Object* _owner) { mOwner = _owner; }
 
 	int getDamage()
 		{ return mDamage; }
@@ -24,6 +25,7 @@ protected:
 	int			 mDamage;
 	Emitter		 mEmitter;
 	sf::Vector2f mVelocity;
+	Object*		 mOwner;
 };
 
 #endif

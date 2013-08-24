@@ -50,6 +50,7 @@ bool Weapon::update(Game* _game)
 
 				Bullet* bullet = new Bullet(7, shootPoint.x, shootPoint.y, sf::Vector2f(cos(angle) * power, sin(angle) * power), mDamage, EMITTERTYPE_Circle);
 				bullet->setUniqueType("Bullet");
+				bullet->setOwner(mOwner);
 				ignore(bullet);
 				mOwner->ignore(bullet);
 				_game->pushObject(bullet);
@@ -64,13 +65,21 @@ bool Weapon::update(Game* _game)
 
 	mReloadCount += _game->getDelta();
 	if(_game->keyPressed("r"))
+	{
 		mReload = true;
+		mClip = 0;
+		if(mReloadVisual)
+			mReloadVisual->setActive(true);
+	}
 
 	if(mReload && mReloadCount > mReloadTime)
 	{
-			mClip		 = mClipSize;
-			mReloadCount = .0f;
-			mReload		 = false;
+		mClip		 = mClipSize;
+		mReloadCount = .0f;
+		mReload		 = false;
+
+		if(mReloadVisual)
+			mReloadVisual->setActive(false);
 	}
 
 	Object::update(_game);

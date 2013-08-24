@@ -1,0 +1,11 @@
+~Timer Anim
+#Frame idle, 0, 0, 60, 60
+#Frame idle, 60, 0, 60, 60
+#Frame idle, 120, 0, 60, 60
+#Frame idle, 180, 0, 60, 60
+#Frame idle, 240, 0, 60, 60
+#Frame idle, 300, 0, 60, 60
+#Frame idle, 360, 0, 60, 60
+#Frame idle, 420, 0, 60, 60
+#Frame idle, 480, 0, 60, 60
+#Frame idle, 540, 0, 60, 60

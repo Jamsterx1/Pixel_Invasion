@@ -1,0 +1,4 @@
+~Timer
+#Frame idle, 0, 0, 120, 120
+#Frame idle, 120, 0, 120, 120
+#Frame idle, 240, 0, 120, 120
