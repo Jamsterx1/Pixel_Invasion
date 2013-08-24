@@ -1,0 +1,5 @@
+#Boundaries  0,  0, 160, 80
+#Text 0, 0, 16, Clip: 0, clipText
+#Text 0, 20, 16, Wave: 0, waveText
+#Text 0, 40, 16, Score: 0, scoreText
+#Text 0, 60, 16, Lose Status: 0, loseText

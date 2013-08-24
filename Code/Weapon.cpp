@@ -3,6 +3,7 @@
 #include "Feanwork/Parser.h"
 #include "Bullet.h"
 #include "Player.h"
+#include <sstream>
 
 Weapon::Weapon(int _resourceID, int _xPos, int _yPos, std::string _weapon, Object* _reloadVisual) :
 	Object(_resourceID, _xPos, _yPos, false)
@@ -59,12 +60,16 @@ bool Weapon::update(Game* _game)
 				// update weapon
 				mClip--;
 				mCounter = 0.f;
+				std::stringstream ss;
+				ss << "Clip: " << mClip;
+				Text* text = static_cast<Text*>(_game->getInterface()->getInterface(0, "clipText"));
+				text->setString(ss.str());
 			}
 		}
 	}
 
 	mReloadCount += _game->getDelta();
-	if(_game->keyPressed("r"))
+	if(_game->keyPressed("r") && !mReload)
 	{
 		mReload = true;
 		mClip = 0;
@@ -77,6 +82,11 @@ bool Weapon::update(Game* _game)
 		mClip		 = mClipSize;
 		mReloadCount = .0f;
 		mReload		 = false;
+
+		std::stringstream ss;
+		ss << "Clip: " << mClip;
+		Text* text = static_cast<Text*>(_game->getInterface()->getInterface(0, "clipText"));
+		text->setString(ss.str());
 
 		if(mReloadVisual)
 			mReloadVisual->setActive(false);

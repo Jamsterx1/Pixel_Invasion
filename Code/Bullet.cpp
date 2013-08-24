@@ -43,7 +43,9 @@ void Bullet::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object
 		Emitter* emitter = &mEmitter;
 		emitter->setPosition(mX, mY);
 		_game->addEmitter(&mEmitter);
-		static_cast<Player*>(mOwner)->resetTimer();
+
+		if(static_cast<Enemy*>(_collision)->getHealth() - mDamage < 0)
+			static_cast<Player*>(mOwner)->resetTimer();
 	}
 	destroy();
 }

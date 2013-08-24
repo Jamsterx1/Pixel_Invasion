@@ -28,7 +28,7 @@ bool Enemy::update(Game* _game)
 	{
 		sf::Vector2f direction;
 		direction.x = _game->getPlayer()->getPosition().x - mX * 0.8f;
-		direction.y = _game->getPlayer()->getPosition().y - mY * 0.8f;
+		direction.y = _game->getPlayer()->getPosition().y - (mY + 100.f) * 0.8f;
 
 		float normal = sqrt(direction.x * direction.x + direction.y * direction.y);
 		direction.x /= normal;

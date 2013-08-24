@@ -22,6 +22,9 @@ public:
 	void collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object* _collision, Game* _game);
 	void damage(int _amount);
 
+	int getHealth()
+		{ return mHealth; }
+
 protected:
 	int		mHealth;
 	int		mHealthMax;

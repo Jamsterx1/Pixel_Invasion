@@ -8,7 +8,7 @@ using namespace Feanwork;
 class Timer : public Object, public Animation
 {
 public:
-	Timer(int _resourceID, float _xPos, float _yPos, std::string _anim, bool _active = false);
+	Timer(int _resourceID, float _xPos, float _yPos, std::string _anim, bool _active = false, std::string _name = "");
 	~Timer();
 
 	bool update(Game* _game);
@@ -17,7 +17,9 @@ public:
 	void reset();
 
 protected:
-
+	int			mRound;
+	bool		mRoundSet;
+	std::string mName;
 };
 
 #endif

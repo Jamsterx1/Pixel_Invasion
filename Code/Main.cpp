@@ -12,7 +12,7 @@ int main()
 	game->loadResources("");
 
 	std::vector<Object*> objects;
-	Timer* spawnTimer = new Timer(12, game->getWidth() / 2 - 60, game->getHeight() / 2 - 60, "Resources/Animation/spawnTimer.anim");
+	Timer* spawnTimer = new Timer(12, game->getWidth() / 2 - 60, game->getHeight() / 2 - 60, "Resources/Animation/spawnTimer.anim", false, "spawnTimer");
 	Timer* killTimer = new Timer(11, 0, game->getHeight() - 60, "Resources/Animation/killTimer.anim", true);
 	Object* city = new Object(4, 0, 0, false);
 	Object* city1 = new Object(4, 980, 0, false);
@@ -21,7 +21,7 @@ int main()
 	Ship* ship = new Ship(3, 5, 0, spawnTimer);
 	Ship* ship2 = new Ship(3, game->getWidth() - 495, 0, spawnTimer);
 	Object* reloadVisual = new Object(10, game->getWidth() / 2 - 120, game->getHeight() - 80, false, false);
-	
+
 	objects.push_back(city);
 	objects.push_back(city1);
 	objects.push_back(ship);
@@ -31,6 +31,9 @@ int main()
 	objects.push_back(reloadVisual);
 	objects.push_back(spawnTimer);
 	objects.push_back(killTimer);
+
+	game->loadUIContent("User Interface/stats.block");
+	game->getInterface()->getInterfaceBlock(0)->setPosition(0, game->getHeight() - 300);
 
 	player->switchWeapon(8, "Resources/Weapons/pistol.weapon", reloadVisual);
 	game->addCollisionCheck(player);
