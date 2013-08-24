@@ -12,7 +12,7 @@ int main()
 	game->loadResources("");
 
 	std::vector<Object*> objects;
-	Timer* spawnTimer = new Timer(12, game->getWidth() / 2, game->getHeight() / 2, "Resources/Animation/spawnTimer.anim");
+	Timer* spawnTimer = new Timer(12, game->getWidth() / 2 - 60, game->getHeight() / 2 - 60, "Resources/Animation/spawnTimer.anim");
 	Timer* killTimer = new Timer(11, 0, game->getHeight() - 60, "Resources/Animation/killTimer.anim", true);
 	Object* city = new Object(4, 0, 0, false);
 	Object* city1 = new Object(4, 980, 0, false);

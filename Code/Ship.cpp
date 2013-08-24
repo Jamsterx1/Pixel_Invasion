@@ -32,7 +32,9 @@ bool Ship::update(Game* _game)
 
 			enemies[i] = new Enemy(2, mX + 196, mY + 193, xRand, yRand, 100);
 			enemies[i]->setUniqueType("Enemy");
+			enemies[i]->ignore(_game->getPlayer());
 			_game->pushObject(enemies[i]);
+			_game->getPlayer()->ignore(enemies[i]);
 			_game->addCollisionCheck(enemies[i]);
 		}
 		std::cout << "Spawn"; // Spawn stuff

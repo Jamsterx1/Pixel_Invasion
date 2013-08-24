@@ -5,6 +5,12 @@
 #include "Feanwork/Animation.h"
 using namespace Feanwork;
 
+enum AISTATE
+{
+	AISTATE_Pursue = 0,
+	AISTATE_Attack,
+};
+
 class Enemy : public Object, public Animation
 {
 public:
@@ -17,10 +23,11 @@ public:
 	void damage(int _amount);
 
 protected:
-	int   mHealth;
-	int   mHealthMax;
-	float mVelocityX;
-	float mVelocityY;
+	int		mHealth;
+	int		mHealthMax;
+	float	mVelocityX;
+	float	mVelocityY;
+	AISTATE mAIState;
 };
 
 #endif
