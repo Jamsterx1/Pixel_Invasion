@@ -27,7 +27,9 @@ bool Ship::update(Game* _game)
 			float yRand = random->rand_range(0.3f, 0.4f);
 
 			enemies[i] = new Enemy(2, mX + 196, mY + 193, xRand, yRand, 100);
+			enemies[i]->setUniqueType("Enemy");
 			_game->pushObject(enemies[i]);
+			_game->addCollisionCheck(enemies[i]);
 		}
 		std::cout << "Spawn"; // Spawn stuff
 	}

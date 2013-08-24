@@ -1,3 +1,10 @@
 ~Idle Animation
 #Frame idle, 0, 0, 42, 60
-#Frame idle, 42, 0, 42, 60
+
+~Forward Movement
+#Frame forward, 0, 120, 42, 60
+#Frame forward, 42, 120, 42, 60
+
+~Downward Movement
+#Frame downward, 0, 60, 42, 60
+#Frame downward, 42, 60, 42, 60

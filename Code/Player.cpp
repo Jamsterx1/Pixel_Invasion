@@ -8,7 +8,6 @@ Player::Player(int _resourceID, float _xPos, float _yPos, int _maxHealth) :
 	mHealth	     = _maxHealth;
 	mHealthMax   = _maxHealth;
 	mDead	     = false;
-	mWeaponAbove = true;
 }
 
 Player::~Player()
@@ -18,27 +17,37 @@ Player::~Player()
 bool Player::update(Game* _game)
 {
 	// Input
+	bool idle = true;
 	if(_game->keyPressed("w"))
 	{
+		idle = false;
 		sf::Vector2f movement(.0f, -.2f * (_game->getDelta() * 1000.f));
 		addPosition(movement.x, movement.y);
 	}
 	else if(_game->keyPressed("s"))
 	{
+		idle = false;
 		sf::Vector2f movement(.0f,  .2f * (_game->getDelta() * 1000.f));
 		addPosition(movement.x, movement.y);
 	}
 
 	if(_game->keyPressed("a"))
 	{
+		idle = false;
 		sf::Vector2f movement(-.2f  * (_game->getDelta() * 1000.f), .0f);
 		addPosition(movement.x, movement.y);
 	}
 	else if(_game->keyPressed("d"))
 	{
+		idle = false;
 		sf::Vector2f movement( .2f  * (_game->getDelta() * 1000.f), .0f);
 		addPosition(movement.x, movement.y);
-	}
+	} 
+
+	if(idle == true)
+		Animation::changeAnim("idle");
+	else
+		Animation::changeAnim("forward");
 
 	// Keep player in boundaries
 	if(mX < .0f && (mY + mAABB.height * 2) > _game->getHeight())
@@ -61,7 +70,10 @@ bool Player::update(Game* _game)
 		mY = .0f;
 
 	if(mWeapon)
+	{
+		mWeapon->setPosition(mX, mY);
 		mWeapon->update(_game);
+	}
 
 	Animation::update(_game);
 	Object::update(_game);
@@ -72,16 +84,8 @@ bool Player::render(Game* _game)
 {
 	if(mWeapon)
 	{
-		if(mWeaponAbove)
-		{
-			Object::render(_game);
-			_game->getWindow()->draw(mWeapon->getSprite());
-		}
-		else if(!mWeaponAbove)
-		{
-			_game->getWindow()->draw(mWeapon->getSprite());
-			Object::render(_game);
-		}
+		_game->getWindow()->draw(mWeapon->getSprite());
+		Object::render(_game);
 	}
 	else
 		Object::render(_game);
@@ -97,11 +101,12 @@ void Player::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object
 void Player::switchWeapon(Weapon* _weapon)
 {
 	mWeapon = _weapon;
+	mWeapon->setPosition(mX, mY);
 	mWeapon->setOwner(this);
 }
 
-void Player::switchWeapon(int _resourceID, float _shootRate, int _clipSize, int _damage, sf::Vector2f _shootPoint, std::string _name)
+void Player::switchWeapon(int _resourceID, std::string _weapon)
 {
-	mWeapon = new Weapon(_resourceID, mX, mY, _shootRate, _clipSize, _damage, _shootPoint, _name);
+	mWeapon = new Weapon(_resourceID, mX, mY, _weapon);
 	mWeapon->setOwner(this);
 }

@@ -1,18 +1,18 @@
 #include "Weapon.h"
 #include "Feanwork/Game.h"
+#include "Feanwork/Parser.h"
 #include "Bullet.h"
+#include "Player.h"
 
-Weapon::Weapon(int _resourceID, int _xPos, int _yPos, float _shootRate, int _clipSize, int _damage, sf::Vector2f _shootPoint, std::string _name) :
+Weapon::Weapon(int _resourceID, int _xPos, int _yPos, std::string _weapon, Object* _reloadVisual) :
 	Object(_resourceID, _xPos, _yPos, false)
 {
-	mCounter   = 0.f;
-	mShootRate = _shootRate;
-	mClip	   = _clipSize;
-	mClipSize  = _clipSize;
-	mDamage	   = _damage;
-	mName	   = _name;
-	mActive    = true; /* NOTE: do i need this? */
-	mOwner	   = NULL;
+	mCounter      = .0f;
+	parseWeapon(_weapon);
+	mActive       = true; /* NOTE: do i need this? */
+	mOwner	      = NULL;
+	mReloadCount  = .0f;
+	mReloadVisual = _reloadVisual;
 }
 
 Weapon::~Weapon()
@@ -25,26 +25,54 @@ bool Weapon::update(Game* _game)
 	if(mClipSize > 0)
 		clip = mClip;
 
+	mCounter += _game->getDelta();
 	if(mActive && mCounter >= mShootRate && clip > 0)
 	{
 		if(_game->mousePressed("left"))
 		{
 			// launch bullets
-			Bullet* bullet = new Bullet(7, mX + mShootPoint.x, mY + mShootPoint.y, sf::Vector2f(.0f, 1.f), mDamage, EMITTERTYPE_Circle);
-			ignore(bullet);
-			mOwner->ignore(bullet);
-			_game->pushObject(bullet);
+			EventManager* evm = EventManager::getSingleton();
+			sf::Vector2i mousePosition = evm->getMousePos(_game);
 
-			// update weapon
-			mClip--;
-			mCounter = 0.f;
+			bool canShoot = false;
+			if(mousePosition.y < mOwner->getPosition().y + mOwner->getAABB().height)
+				canShoot = true;
+
+			if(canShoot)
+			{
+				sf::View view = _game->getCamera();
+				sf::Vector2f mousePosTrans = _game->getWindow()->mapPixelToCoords(mousePosition, view);
+				sf::Vector2f shootPoint(mX + mShootPoint.x - 8, mY + mShootPoint.y);
+
+				sf::Vector2f delta(mousePosTrans.x - shootPoint.x, mousePosTrans.y - shootPoint.y);
+				float angle = atan2(delta.y, delta.x);
+				float power = 500.f;
+
+				Bullet* bullet = new Bullet(7, shootPoint.x, shootPoint.y, sf::Vector2f(cos(angle) * power, sin(angle) * power), mDamage, EMITTERTYPE_Circle);
+				bullet->setUniqueType("Bullet");
+				ignore(bullet);
+				mOwner->ignore(bullet);
+				_game->pushObject(bullet);
+				static_cast<Player*>(mOwner)->changeAnim("forward");
+
+				// update weapon
+				mClip--;
+				mCounter = 0.f;
+			}
 		}
 	}
-	else if(mActive)
-		mCounter += _game->getDelta();
 
-	mX = mOwner->getPosition().x;
-	mY = mOwner->getPosition().y;
+	mReloadCount += _game->getDelta();
+	if(_game->keyPressed("r"))
+		mReload = true;
+
+	if(mReload && mReloadCount > mReloadTime)
+	{
+			mClip		 = mClipSize;
+			mReloadCount = .0f;
+			mReload		 = false;
+	}
+
 	Object::update(_game);
 	return true;
 }
@@ -56,4 +84,32 @@ bool Weapon::render(Game* _game)
 
 void Weapon::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object* _collision, Game* _game)
 {
+}
+
+void Weapon::parseWeapon(std::string _weaponFile)
+{
+	Parser p(_weaponFile);
+	std::string keyword = "";
+
+	while((keyword = p.getNextKeyword()) != "")
+	{
+		if(keyword == "Name")
+			mName = p.getString(0);
+		else if(keyword == "ShootRate")
+			mShootRate = p.getFloat(0);
+		else if(keyword == "ClipSize")
+		{
+			mClipSize = p.getInt(0);
+			mClip     = p.getInt(0);
+		}
+		else if(keyword == "Damage")
+			mDamage = p.getInt(0);
+		else if(keyword == "ShootPoint")
+		{
+			mShootPoint.x = p.getFloat(0);
+			mShootPoint.y = p.getFloat(1);
+		}
+		else if(keyword == "ReloadTime")
+			mReloadTime = p.getFloat(0);
+	}
 }

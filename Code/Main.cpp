@@ -23,10 +23,14 @@ int main()
 	objects.push_back(ship2);
 	objects.push_back(player);
 	objects.push_back(enemy);
-	
-	player->switchWeapon(5, 1.f, -1, 10, sf::Vector2f(.0f, .0f), "Fists");
+
+	player->switchWeapon(8, "Resources/Weapons/pistol.weapon");
 	game->addCollisionCheck(player);
+	game->addCollisionCheck(enemy);
+	game->addCollisionCheck(ship);
+	game->addCollisionCheck(ship2);
 	game->setPlayer(player);
+	enemy->setUniqueType("Enemy");
 
 	game->setDebugMode(true);
 	game->initMenu(objects);
