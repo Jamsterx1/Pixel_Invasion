@@ -24,7 +24,7 @@ int main()
 	objects.push_back(player);
 	objects.push_back(enemy);
 	
-	player->switchWeapon(5, 0.2f, -1, "Fists");
+	player->switchWeapon(5, 1.f, -1, 10, sf::Vector2f(.0f, .0f), "Fists");
 	game->addCollisionCheck(player);
 	game->setPlayer(player);
 

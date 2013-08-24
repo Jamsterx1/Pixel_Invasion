@@ -41,14 +41,27 @@ bool Player::update(Game* _game)
 	}
 
 	// Keep player in boundaries
-	if(mX > _game->getWidth())
-		mX = _game->getWidth() - mAABB.width;
-	else if(mX > _game->getWidth())
-		mX = _game->getWidth() - mAABB.width;
-	else if(mX > _game->getWidth())
-		mX = _game->getWidth() - mAABB.width;
-	else if(mX > _game->getWidth())
-		mX = _game->getWidth() - mAABB.width;
+	if(mX < .0f && (mY + mAABB.height * 2) > _game->getHeight())
+	{
+		mX = .0f;
+		mY = _game->getHeight() - (mAABB.height * 2);
+	}
+	else if((mX + mAABB.width * 2) > _game->getWidth() && (mY + mAABB.height * 2) > _game->getHeight())
+	{
+		mX = _game->getWidth() - mAABB.width * 2;
+		mY = _game->getHeight() - (mAABB.height * 2);
+	}
+	else if((mX + mAABB.width * 2) > _game->getWidth())
+		mX = _game->getWidth() - mAABB.width * 2;
+	else if(mX < .0f)
+		mX = .0f;
+	else if((mY + mAABB.height * 2) > _game->getHeight())
+		mY = _game->getHeight() - mAABB.height * 2;
+	else if(mY < .0f)
+		mY = .0f;
+
+	if(mWeapon)
+		mWeapon->update(_game);
 
 	Animation::update(_game);
 	Object::update(_game);
@@ -73,7 +86,6 @@ bool Player::render(Game* _game)
 	else
 		Object::render(_game);
 
-	Object::render(_game);
 	return true;
 }
 
@@ -88,8 +100,8 @@ void Player::switchWeapon(Weapon* _weapon)
 	mWeapon->setOwner(this);
 }
 
-void Player::switchWeapon(int _resourceID, float _shootRate, int _clipSize, std::string _name)
+void Player::switchWeapon(int _resourceID, float _shootRate, int _clipSize, int _damage, sf::Vector2f _shootPoint, std::string _name)
 {
-	mWeapon = new Weapon(_resourceID, mX, mY, _shootRate, _clipSize, _name);
+	mWeapon = new Weapon(_resourceID, mX, mY, _shootRate, _clipSize, _damage, _shootPoint, _name);
 	mWeapon->setOwner(this);
 }

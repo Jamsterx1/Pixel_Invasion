@@ -19,7 +19,7 @@ public:
 		{ return mDamage; }
 
 protected:
-	float		 mCounter;
+	float		 mLifeCounter;
 	float		 mLife;
 	int			 mDamage;
 	Emitter		 mEmitter;
