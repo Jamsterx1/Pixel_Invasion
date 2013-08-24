@@ -23,7 +23,8 @@ int main()
 	objects.push_back(ship2);
 	objects.push_back(player);
 	objects.push_back(enemy);
-
+	
+	player->switchWeapon(5, 0.2f, -1, "Fists");
 	game->addCollisionCheck(player);
 	game->setPlayer(player);
 

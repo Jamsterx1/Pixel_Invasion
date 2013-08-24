@@ -57,11 +57,21 @@ bool Player::update(Game* _game)
 
 bool Player::render(Game* _game)
 {
-	if(mWeaponAbove)
+	if(mWeapon)
 	{
-		Object::render(_game);
-		_game->getWindow()->draw(mWeapon);
+		if(mWeaponAbove)
+		{
+			Object::render(_game);
+			_game->getWindow()->draw(mWeapon->getSprite());
+		}
+		else if(!mWeaponAbove)
+		{
+			_game->getWindow()->draw(mWeapon->getSprite());
+			Object::render(_game);
+		}
 	}
+	else
+		Object::render(_game);
 
 	Object::render(_game);
 	return true;
@@ -75,9 +85,11 @@ void Player::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object
 void Player::switchWeapon(Weapon* _weapon)
 {
 	mWeapon = _weapon;
+	mWeapon->setOwner(this);
 }
 
 void Player::switchWeapon(int _resourceID, float _shootRate, int _clipSize, std::string _name)
 {
 	mWeapon = new Weapon(_resourceID, mX, mY, _shootRate, _clipSize, _name);
+	mWeapon->setOwner(this);
 }

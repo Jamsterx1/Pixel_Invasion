@@ -14,13 +14,13 @@ public:
 	bool update(Game* _game);
 	bool render(Game* _game);
 	void collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object* _collision, Game* _game);
+	void damage(int _amount);
 
 protected:
 	int   mHealth;
 	int   mHealthMax;
 	float mVelocityX;
 	float mVelocityY;
-	bool  mDead;
 };
 
 #endif
