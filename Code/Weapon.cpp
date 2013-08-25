@@ -51,7 +51,11 @@ bool Weapon::update(Game* _game)
 				float angle = atan2(delta.y, delta.x);
 				float power = 500.f;
 
-				Bullet* bullet = new Bullet(7, shootPoint.x, shootPoint.y, sf::Vector2f(cos(angle) * power, sin(angle) * power), mDamage, EMITTERTYPE_Circle);
+				int id = 7;
+				if(mName == "FireballLauncher")
+					id = 23;
+
+				Bullet* bullet = new Bullet(id, shootPoint.x, shootPoint.y, sf::Vector2f(cos(angle) * power, sin(angle) * power), mDamage, EMITTERTYPE_Circle);
 				bullet->setUniqueType("Bullet");
 				bullet->setOwner(mOwner);
 				ignore(bullet);

@@ -50,8 +50,14 @@ void WeaponPickup::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, 
 {
 	if(_collision->getUniqueType() == "Player")
 	{
-		int r = 8;
+		int r = 0;
 		// TODO: set weapon according to random
+		if(mRandom == 13)
+			r = 21;
+		else if(mRandom == 14)
+			r = 8;
+		else if(mRandom == 15)
+			r = 22;
 
 		Weapon* weapon = new Weapon(r, 0.f, 0.f, mFile, mReloadVisual);
 		static_cast<Player*>(_game->getPlayer())->switchWeapon(weapon, _game);

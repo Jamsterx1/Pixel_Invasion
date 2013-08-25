@@ -112,14 +112,14 @@ bool Player::update(Game* _game)
 		stringstream ss2;
 		stringstream ss3;
 		ss << "GAME OVER!";
-		ss2 << "Press the left mouse button to play again";
+		ss2 << "Press the right mouse button to play again";
 		ss3 << "Highscore: " << mScore;
 
 		static_cast<Text*>(_game->getInterface()->getInterface(1, "gameOverText"))->setString(ss.str());
 		static_cast<Text*>(_game->getInterface()->getInterface(1, "replayText"))->setString(ss2.str());
 		static_cast<Text*>(_game->getInterface()->getInterface(1, "highscoreText"))->setString(ss3.str());
 
-		if(_game->mousePressed("left"))
+		if(_game->mousePressed("right"))
 			reset(_game);
 	}
 

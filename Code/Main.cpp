@@ -10,7 +10,7 @@ void startGame(Game* _game)
 	_game->setState(GAME);
 
 	std::vector<Object*> gameObjs;
-	Timer* spawnTimer = new Timer(12, _game->getWidth() / 2 - 30, _game->getHeight() / 2 - 60, "Resources/Animation/spawnTimer.anim", false, "spawnTimer");
+	Timer* spawnTimer = new Timer(12, _game->getWidth() / 2 - 60, _game->getHeight() / 2 - 40, "Resources/Animation/spawnTimer.anim", false, "spawnTimer");
 	Timer* killTimer = new Timer(11, 0, _game->getHeight() - 60, "Resources/Animation/killTimer.anim", true);
 	Object* city = new Object(4, 0, 0, false);
 	Object* city1 = new Object(4, 980, 0, false);

@@ -1,7 +1,7 @@
 #Name Fireball Launcher
-#ShootRate 0.3
-#ClipSize 10
-#ClipCapacity 40
-#Damage 50
-#ShootPoint 12, 32
-#ReloadTime 3.4
+#ShootRate 0.2
+#ClipSize 15
+#ClipCapacity 1000
+#Damage 250
+#ShootPoint 28, 9
+#ReloadTime 2.0
