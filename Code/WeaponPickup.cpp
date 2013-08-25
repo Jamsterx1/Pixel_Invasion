@@ -54,7 +54,7 @@ void WeaponPickup::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, 
 		// TODO: set weapon according to random
 
 		Weapon* weapon = new Weapon(r, 0.f, 0.f, mFile, mReloadVisual);
-		static_cast<Player*>(_game->getPlayer())->switchWeapon(weapon);
+		static_cast<Player*>(_game->getPlayer())->switchWeapon(weapon, _game);
 		destroy();
 	}
 }

@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Feanwork/Game.h"
 #include "Timer.h"
+#include <sstream>
 
 Player::Player(int _resourceID, float _xPos, float _yPos, int _maxHealth, Object* _timer) :
 	Object(_resourceID, _xPos, _yPos, false),
@@ -36,13 +37,13 @@ bool Player::update(Game* _game)
 	if(_game->keyPressed("a"))
 	{
 		idle = false;
-		sf::Vector2f movement(-.2f  * (_game->getDelta() * 1000.f), .0f);
+		sf::Vector2f movement(-.3f  * (_game->getDelta() * 1000.f), .0f);
 		addPosition(movement.x, movement.y);
 	}
 	else if(_game->keyPressed("d"))
 	{
 		idle = false;
-		sf::Vector2f movement( .2f  * (_game->getDelta() * 1000.f), .0f);
+		sf::Vector2f movement( .3f  * (_game->getDelta() * 1000.f), .0f);
 		addPosition(movement.x, movement.y);
 	} 
 
@@ -103,17 +104,31 @@ void Player::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object
 	addPosition(_depth.x * _normal.x, _depth.y * _normal.y);
 }
 
-void Player::switchWeapon(Weapon* _weapon)
+void Player::switchWeapon(Weapon* _weapon, Game* _game)
 {
 	mWeapon = _weapon;
 	mWeapon->setPosition(mX, mY);
 	mWeapon->setOwner(this);
+
+	if(_game)
+	{
+		stringstream ss;
+		ss << mWeapon->getName();
+		static_cast<Text*>(_game->getInterface()->getInterface(1, "weaponText"))->setString(ss.str());
+	}
 }
 
-void Player::switchWeapon(int _resourceID, std::string _weapon, Object* _reloadVisual)
+void Player::switchWeapon(int _resourceID, std::string _weapon, Object* _reloadVisual, Game* _game)
 {
 	mWeapon = new Weapon(_resourceID, mX, mY, _weapon, _reloadVisual);
 	mWeapon->setOwner(this);
+
+	if(_game)
+	{
+		stringstream ss;
+		ss << mWeapon->getName();
+		static_cast<Text*>(_game->getInterface()->getInterface(1, "weaponText"))->setString(ss.str());
+	}
 }
 
 Weapon* Player::getWeapon()

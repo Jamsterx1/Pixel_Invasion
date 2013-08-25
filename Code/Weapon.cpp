@@ -14,6 +14,8 @@ Weapon::Weapon(int _resourceID, int _xPos, int _yPos, std::string _weapon, Objec
 	mOwner	      = NULL;
 	mReloadCount  = .0f;
 	mReloadVisual = _reloadVisual;
+	mReload		  = false;
+	mLastClip	  = 0;
 }
 
 Weapon::~Weapon()
@@ -61,37 +63,43 @@ bool Weapon::update(Game* _game)
 				mClip--;
 				mCounter = 0.f;
 				std::stringstream ss;
-				ss << "Clip: " << mClip;
-				Text* text = static_cast<Text*>(_game->getInterface()->getInterface(0, "clipText"));
+				ss << "Clip: " << mClip << "/" << mClipCapacity;
+				Text* text = static_cast<Text*>(_game->getInterface()->getInterface(1, "clipText"));
 				text->setString(ss.str());
 			}
 		}
 	}
 
 	mReloadCount += _game->getDelta();
-	if(_game->keyPressed("r") && !mReload)
+	if(/*_game->keyPressed("r") &&*/ mClip <= 0 && !mReload /*&& mClip < mClipSize*/)
 	{
-		mReload = true;
-		mClip = 0;
+		mReload   = true;
+		mLastClip = mClip;
+		mClip	  = 0;
 		if(mReloadVisual)
 			mReloadVisual->setActive(true);
 	}
 
 	if(mReload && mReloadCount > mReloadTime)
 	{
-		mClip		 = mClipSize;
-		mReloadCount = .0f;
-		mReload		 = false;
+		mClipCapacity  -= mClipSize - mLastClip;
+		mClip			= mClipSize;
+		mReloadCount	= .0f;
+		mReload			= false;
 
 		std::stringstream ss;
-		ss << "Clip: " << mClip;
-		Text* text = static_cast<Text*>(_game->getInterface()->getInterface(0, "clipText"));
+		ss << "Clip: " << mClip << "/" << mClipCapacity;
+		Text* text = static_cast<Text*>(_game->getInterface()->getInterface(1, "clipText"));
 		text->setString(ss.str());
 
 		if(mReloadVisual)
 			mReloadVisual->setActive(false);
 	}
 
+	stringstream ss;
+	ss << "Weapon Damage: " << mDamage;
+	static_cast<Text*>(_game->getInterface()->getInterface(1, "damageText"))->setString(ss.str());
+	
 	Object::update(_game);
 	return true;
 }
@@ -121,6 +129,8 @@ void Weapon::parseWeapon(std::string _weaponFile)
 			mClipSize = p.getInt(0);
 			mClip     = p.getInt(0);
 		}
+		else if(keyword == "ClipCapacity")
+			mClipCapacity = p.getInt(0);
 		else if(keyword == "Damage")
 			mDamage = p.getFloat(0);
 		else if(keyword == "ShootPoint")

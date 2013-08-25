@@ -22,6 +22,9 @@ public:
 	std::string getName()
 		{ return mName; }
 
+	float getDamage()
+		{ return mDamage; }
+
 	void decreaseDamage()
 		{ mDamage -= 0.1f; }
 
@@ -31,8 +34,10 @@ protected:
 	float		 mReloadCount;
 	float		 mReloadTime;
 	bool		 mReload;
+	int			 mLastClip;
 	int			 mClip;
 	int			 mClipSize;
+	int			 mClipCapacity;
 	float		 mDamage;
 	bool		 mActive;
 	sf::Vector2f mShootPoint;

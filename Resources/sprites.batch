@@ -13,3 +13,7 @@
 #Resource 13, Sprites/fireballLauncherPickup.png
 #Resource 14, Sprites/pistolPickup.png
 #Resource 15, Sprites/shotgunPickup.png
+#Resource 16, Sprites/quitGame.png
+#Resource 17, Sprites/startButton.png
+#Resource 18, Sprites/titleScreen.png
+

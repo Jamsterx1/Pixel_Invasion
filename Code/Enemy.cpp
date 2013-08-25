@@ -39,15 +39,15 @@ bool Enemy::update(Game* _game)
 	if(mAIState == AISTATE_Pursue)
 	{
 		sf::Vector2f direction;
-		direction.x = _game->getPlayer()->getPosition().x - mX * 0.8f;
-		direction.y = _game->getPlayer()->getPosition().y - (mY + 100.f) * 0.8f;
+		direction.x = _game->getPlayer()->getPosition().x - mX /** 0.8f*/;
+		direction.y = _game->getPlayer()->getPosition().y - mY /** 0.8f*/;
 
 		float normal = sqrt(direction.x * direction.x + direction.y * direction.y);
 		direction.x /= normal;
 		direction.y /= normal;
 
-		mVelocityX = direction.x * _game->getDelta() * 10.f;
-		mVelocityY = direction.y * _game->getDelta() * 10.f;
+		mVelocityX = (direction.x * _game->getDelta() * 10.f) * .6f;
+		mVelocityY = (direction.y * _game->getDelta() * 10.f) * .6f;
 
 		Random* random = Random::get_singleton();
 		mVelocityX += random->rand_range(-.5f, .5f);
@@ -57,7 +57,7 @@ bool Enemy::update(Game* _game)
 		distance.x = _game->getPlayer()->getPosition().x - mX;
 		distance.y = _game->getPlayer()->getPosition().y - mY;
 
-		if(abs(distance.x) < 50.f && abs(distance.y) < 50.f)
+		if(abs(distance.x) < 10.f && abs(distance.y) < 10.f)
 			mAIState = AISTATE_Attack;
 	}
 	else if(mAIState == AISTATE_Attack)
@@ -70,7 +70,7 @@ bool Enemy::update(Game* _game)
 		distance.x = (player->getPosition().x + player->getAABB().width) - (mX + mAABB.width);
 		distance.y = (player->getPosition().y + player->getAABB().height) - (mY + mAABB.height);
 
-		if(abs(distance.x) > 50.f && abs(distance.y) > 50.f)
+		if(abs(distance.x) > 10.f && abs(distance.y) > 10.f)
 			mAIState = AISTATE_Pursue;
 	}
 

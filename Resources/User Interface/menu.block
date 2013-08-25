@@ -1,0 +1,3 @@
+#Boundaries  0,  0, 1200, 800
+#Button 755, 275, 17, 17, 17, startGame, startButton
+#Button 755, 355, 16, 16, 16, quitGame, quitButton

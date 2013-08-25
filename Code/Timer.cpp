@@ -26,9 +26,16 @@ bool Timer::update(Game* _game)
 		mRound++;
 		stringstream ss;
 		ss << "Wave: " << mRound;
-		static_cast<Text*>(_game->getInterface()->getInterface(0, "waveText"))->setString(ss.str());
+		static_cast<Text*>(_game->getInterface()->getInterface(1, "waveText"))->setString(ss.str());
 		mRoundSet = true;
-		static_cast<Player*>(_game->getPlayer())->getWeapon()->decreaseDamage();
+		Weapon* wep = static_cast<Player*>(_game->getPlayer())->getWeapon();
+		wep->decreaseDamage();
+	}
+	else if(mName == "killTimer" && Animation::hasLooped())
+	{
+		stringstream ss;
+		ss << "Lose Status: " << 1;
+
 	}
 
 	if(Animation::hasLooped())
