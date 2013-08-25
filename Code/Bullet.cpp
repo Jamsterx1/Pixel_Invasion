@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "Player.h"
 
-Bullet::Bullet(int _resourceID, int _xPos, int _yPos, sf::Vector2f _velocity, float _damage, EMITTERTYPE _type) :
+Bullet::Bullet(int _resourceID, float _xPos, float _yPos, sf::Vector2f _velocity, float _damage, EMITTERTYPE _type) :
 	Object(_resourceID, _xPos, _yPos, true),
 	mEmitter(sf::Vector2f(_xPos, _yPos), sf::Vector2f(.0f, .0f), _type, false)
 {

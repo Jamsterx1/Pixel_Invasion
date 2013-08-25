@@ -5,7 +5,7 @@
 #include "Player.h"
 #include <sstream>
 
-Weapon::Weapon(int _resourceID, int _xPos, int _yPos, std::string _weapon, Object* _reloadVisual) :
+Weapon::Weapon(int _resourceID, float _xPos, float _yPos, std::string _weapon, Object* _reloadVisual) :
 	Object(_resourceID, _xPos, _yPos, false)
 {
 	mCounter      = .0f;
@@ -68,7 +68,7 @@ bool Weapon::update(Game* _game)
 				mCounter = 0.f;
 				std::stringstream ss;
 				ss << "Clip: " << mClip << "/" << mClipCapacity;
-				Text* text = static_cast<Text*>(_game->getInterface()->getInterface(1, "clipText"));
+				Text* text = static_cast<Text*>(_game->getInterface()->getInterface(2, "clipText"));
 				text->setString(ss.str());
 				
 				if(mName == "FireballLauncher")
@@ -107,7 +107,7 @@ bool Weapon::update(Game* _game)
 
 			std::stringstream ss;
 			ss << "Clip: " << mClip << "/" << mClipCapacity;
-			Text* text = static_cast<Text*>(_game->getInterface()->getInterface(1, "clipText"));
+			Text* text = static_cast<Text*>(_game->getInterface()->getInterface(2, "clipText"));
 			text->setString(ss.str());
 			_game->playSound("reload");
 			_game->playSound("reload");
@@ -119,7 +119,7 @@ bool Weapon::update(Game* _game)
 
 	stringstream ss;
 	ss << "Weapon Damage: " << mDamage;
-	static_cast<Text*>(_game->getInterface()->getInterface(1, "damageText"))->setString(ss.str());
+	static_cast<Text*>(_game->getInterface()->getInterface(2, "damageText"))->setString(ss.str());
 	
 	Object::update(_game);
 	return true;

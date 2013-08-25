@@ -48,14 +48,14 @@ void Ship::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object* 
 std::vector<Object*> Ship::spawn(int _amount, Game* _game)
 {
 	std::vector<Object*> objects;
-	for(unsigned i = 0; i < _amount; i++)
+	for(int i = 0; i < _amount; i++)
 	{
 		Random* random = Random::get_singleton();
 		float xRand = random->rand_range(-0.2f, 0.2f);
 		float yRand = random->rand_range(0.3f, 0.4f);
 
 		Player* player = static_cast<Player*>(_game->getPlayer());
-		Enemy* newEnemy = new Enemy(2, mX + 196, mY + 193, xRand, yRand, 100 + (player->getDifficulty() * 1.5f), mVisual);
+		Enemy* newEnemy = new Enemy(2, (float)(mX + 196), (float)(mY + 193), xRand, yRand, 100 + (int)(player->getDifficulty() * 1.5f), mVisual);
 		newEnemy->setUniqueType("Enemy");
 		newEnemy->ignore(_game->getPlayer());
 		_game->pushObject(newEnemy);

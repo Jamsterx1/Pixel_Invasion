@@ -34,23 +34,23 @@ bool Enemy::update(Game* _game)
 		_game->addEmitter(newEmitter);
 		
 		Random* random = Random::get_singleton();
-		int rand = random->rand_range(1, 101);
+		int rand = (int)random->rand_range(1, 250);
 		Timer* t = NULL;
 		for(auto& i: _game->getObjects())
 			if(i->getUniqueType() == "spawnTimer")
 				t = static_cast<Timer*>(i);
 
-		if(rand >= 60 && rand <= 90)
+		if(rand >= 190 && rand <= 219)
 		{
 			WeaponPickup* pickup = new WeaponPickup(14, mX, mY, mReloadVisual);
 			_game->pushObject(pickup);
 		}
-		else if(rand >= 91 && rand <= 97)
+		else if(rand >= 220 && rand <= 240)
 		{
 			WeaponPickup* pickup = new WeaponPickup(15, mX, mY, mReloadVisual);
 			_game->pushObject(pickup);
 		}
-		else if(rand >= 98 && t->getRound() > 40)
+		else if(rand >= 241 && t->getRound() > 40)
 		{
 			WeaponPickup* pickup = new WeaponPickup(13, mX, mY, mReloadVisual);
 			_game->pushObject(pickup);
@@ -59,8 +59,8 @@ bool Enemy::update(Game* _game)
 		HealthPickup* pickup = new HealthPickup(19, mX, mY);
 		_game->pushObject(pickup);
 
-		int coinRand = random->rand_range(1, 4);
-		for(unsigned i = 0; i < coinRand; i++)
+		int coinRand = (int)random->rand_range(1, 4);
+		for(int i = 0; i < coinRand; i++)
 		{
 			CoinPickup* pickup = new CoinPickup(20, mX, mY + (45 * i));
 			_game->pushObject(pickup);
@@ -72,7 +72,7 @@ bool Enemy::update(Game* _game)
 		double distance = sqrt((playerPositon.x - mX) * (playerPositon.x - mX) + (playerPositon.y - mY) * (playerPositon.y - mY));
 
 		float scoreRand = random->rand_range(0.3f, 0.7f);
-		player->addScore(1000 - distance * scoreRand, _game);
+		player->addScore((int)(1000 - distance * scoreRand), _game);
 
 		// Destroy
 		destroy();

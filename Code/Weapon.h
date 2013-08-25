@@ -7,7 +7,7 @@ using namespace Feanwork;
 class Weapon : public Object
 {
 public:
-	Weapon(int _resourceID, int _xPos, int _yPos, std::string _weapon, Object* _reloadVisual = nullptr);
+	Weapon(int _resourceID, float _xPos, float _yPos, std::string _weapon, Object* _reloadVisual = nullptr);
 	~Weapon();
 
 	virtual bool update(Game* _game);

@@ -27,7 +27,7 @@ bool Timer::update(Game* _game)
 		mRound++;
 		stringstream ss;
 		ss << "Wave: " << mRound;
-		static_cast<Text*>(_game->getInterface()->getInterface(1, "waveText"))->setString(ss.str());
+		static_cast<Text*>(_game->getInterface()->getInterface(2, "waveText"))->setString(ss.str());
 		mRoundSet = true;
 		Weapon* wep = static_cast<Player*>(_game->getPlayer())->getWeapon();
 		wep->decreaseDamage();
@@ -37,7 +37,7 @@ bool Timer::update(Game* _game)
 	{
 		stringstream ss;
 		ss << "Lose Status: " << 1;
-		static_cast<Text*>(_game->getInterface()->getInterface(1, "loseText"))->setString(ss.str());
+		static_cast<Text*>(_game->getInterface()->getInterface(2, "loseText"))->setString(ss.str());
 	}
 
 	if(Animation::hasLooped())

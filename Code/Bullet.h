@@ -8,7 +8,7 @@ using namespace Feanwork;
 class Bullet : public Object
 {
 public:
-	Bullet(int _resourceID, int _xPos, int _yPos, sf::Vector2f _velocity, float _damage, EMITTERTYPE _type);
+	Bullet(int _resourceID, float _xPos, float _yPos, sf::Vector2f _velocity, float _damage, EMITTERTYPE _type);
 	~Bullet();
 
 	bool update(Game* _game);

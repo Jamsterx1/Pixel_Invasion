@@ -19,11 +19,11 @@ void reset(Game* _game)
 		}
 	}
 
-	static_cast<Text*>(_game->getInterface()->getInterface(1, "waveText"))->setString("Wave: 1");
-	static_cast<Text*>(_game->getInterface()->getInterface(1, "scoreText"))->setString("Score: 0");
-	static_cast<Text*>(_game->getInterface()->getInterface(1, "gameOverText"))->setString("");
-	static_cast<Text*>(_game->getInterface()->getInterface(1, "replayText"))->setString("");
-	static_cast<Text*>(_game->getInterface()->getInterface(1, "highscoreText"))->setString("");
+	static_cast<Text*>(_game->getInterface()->getInterface(2, "waveText"))->setString("Wave: 1");
+	static_cast<Text*>(_game->getInterface()->getInterface(2, "scoreText"))->setString("Score: 0");
+	static_cast<Text*>(_game->getInterface()->getInterface(2, "gameOverText"))->setString("");
+	static_cast<Text*>(_game->getInterface()->getInterface(2, "replayText"))->setString("");
+	static_cast<Text*>(_game->getInterface()->getInterface(2, "highscoreText"))->setString("");
 }
 
 Player::Player(int _resourceID, float _xPos, float _yPos, int _maxHealth, Object* _timer) :
@@ -35,7 +35,7 @@ Player::Player(int _resourceID, float _xPos, float _yPos, int _maxHealth, Object
 	mLose	     = false;
 	mTimer		 = _timer;
 	mScore       = 0;
-	mDifficulty	 = 1.0f;
+	mDifficulty	 = 2.f;
 	mHighScore	 = 0;
 }
 
@@ -84,21 +84,21 @@ bool Player::update(Game* _game)
 		if(mX < .0f && (mY + mAABB.height * 2) > _game->getHeight())
 		{
 			mX = .0f;
-			mY = _game->getHeight() - (mAABB.height * 2);
+			mY = (float)(_game->getHeight() - (mAABB.height * 2));
 		}
 		else if((mX + mAABB.width * 2) > _game->getWidth() && (mY + mAABB.height * 2) > _game->getHeight())
 		{
-			mX = _game->getWidth() - mAABB.width * 2;
-			mY = _game->getHeight() - (mAABB.height * 2);
+			mX = (float)(_game->getWidth() - mAABB.width * 2);
+			mY = (float)(_game->getHeight() - (mAABB.height * 2));
 		}
 		else if(mY < 350)
-			mY = 350;
+			mY = 350.f;
 		else if((mX + mAABB.width * 2) > _game->getWidth())
-			mX = _game->getWidth() - mAABB.width * 2;
+			mX = (float)(_game->getWidth() - mAABB.width * 2);
 		else if(mX < .0f)
 			mX = .0f;
 		else if((mY + mAABB.height * 2) > _game->getHeight())
-			mY = _game->getHeight() - mAABB.height * 2;
+			mY = (float)(_game->getHeight() - mAABB.height * 2);
 		else if(mY < .0f)
 			mY = .0f;
 
@@ -127,10 +127,10 @@ bool Player::update(Game* _game)
 			ss4 << "Personal Best: " << mHighScore;
 		}
 
-		static_cast<Text*>(_game->getInterface()->getInterface(1, "gameOverText"))->setString(ss.str());
-		static_cast<Text*>(_game->getInterface()->getInterface(1, "replayText"))->setString(ss2.str());
-		static_cast<Text*>(_game->getInterface()->getInterface(1, "highscoreText"))->setString(ss3.str());
-		static_cast<Text*>(_game->getInterface()->getInterface(1, "personalText"))->setString(ss4.str());
+		static_cast<Text*>(_game->getInterface()->getInterface(2, "gameOverText"))->setString(ss.str());
+		static_cast<Text*>(_game->getInterface()->getInterface(2, "replayText"))->setString(ss2.str());
+		static_cast<Text*>(_game->getInterface()->getInterface(2, "highscoreText"))->setString(ss3.str());
+		static_cast<Text*>(_game->getInterface()->getInterface(2, "personalText"))->setString(ss4.str());
 
 		if(_game->mousePressed("right"))
 			reset(_game);
@@ -138,13 +138,13 @@ bool Player::update(Game* _game)
 
 	stringstream ss;
 	ss << "Health: " << mHealth;
-	static_cast<Text*>(_game->getInterface()->getInterface(1, "healthText"))->setString(ss.str());
+	static_cast<Text*>(_game->getInterface()->getInterface(2, "healthText"))->setString(ss.str());
 
 	if(static_cast<Timer*>(mTimer)->hasLooped() || mHealth < 0)
 	{
 		stringstream ss2;
 		ss2 << "Lose Status: " << 1;
-		static_cast<Text*>(_game->getInterface()->getInterface(1, "loseText"))->setString(ss2.str());
+		static_cast<Text*>(_game->getInterface()->getInterface(2, "loseText"))->setString(ss2.str());
 		mLose = true;
 	}
 
@@ -181,7 +181,7 @@ void Player::switchWeapon(Weapon* _weapon, Game* _game)
 	{
 		stringstream ss;
 		ss << mWeapon->getName();
-		static_cast<Text*>(_game->getInterface()->getInterface(1, "weaponText"))->setString(ss.str());
+		static_cast<Text*>(_game->getInterface()->getInterface(2, "weaponText"))->setString(ss.str());
 	}
 }
 
@@ -194,7 +194,7 @@ void Player::switchWeapon(int _resourceID, std::string _weapon, Object* _reloadV
 	{
 		stringstream ss;
 		ss << mWeapon->getName();
-		static_cast<Text*>(_game->getInterface()->getInterface(1, "weaponText"))->setString(ss.str());
+		static_cast<Text*>(_game->getInterface()->getInterface(2, "weaponText"))->setString(ss.str());
 	}
 }
 
@@ -222,7 +222,7 @@ void Player::addScore(int _score, Game* _game)
 	mScore += _score;
 	stringstream ss;
 	ss << "Score: " << mScore;
-	static_cast<Text*>(_game->getInterface()->getInterface(1, "scoreText"))->setString(ss.str());
+	static_cast<Text*>(_game->getInterface()->getInterface(2, "scoreText"))->setString(ss.str());
 }
 
 void Player::saveHighScore(std::string _location)
@@ -244,7 +244,7 @@ int Player::loadHighScore(std::string _location, Game* _game)
 	stream.read((char*)&mHighScore, sizeof(int));
 	stringstream ss;
 	ss << "Personal Best: " << mHighScore;
-	static_cast<Text*>(_game->getInterface()->getInterface(1, "personalText"))->setString(ss.str());
+	static_cast<Text*>(_game->getInterface()->getInterface(2, "personalText"))->setString(ss.str());
 
 	stream.close();
 	return mHighScore;
