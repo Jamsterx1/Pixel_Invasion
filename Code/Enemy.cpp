@@ -6,6 +6,7 @@
 #include "WeaponPickup.h"
 #include "HealthPickup.h"
 #include "CoinPickup.h"
+#include "Timer.h"
 #include <sstream>
 
 Enemy::Enemy(int _resourceID, float _xPos, float _yPos, float _xVel, float _yVel, int _maxHealth, Object* _visual) :
@@ -28,25 +29,40 @@ bool Enemy::update(Game* _game)
 {
 	if(mHealth <= 0)
 	{
+		Emitter* newEmitter = new Emitter(sf::Vector2f(mX, mY), sf::Vector2f(.0f, -1.f), EMITTERTYPE_Directional, false);
+		newEmitter->parseParticleFile("Resources/Particles/plus10.particle");
+		_game->addEmitter(newEmitter);
 		
 		Random* random = Random::get_singleton();
-		int rand = (int)random->rand_range(1, 3);
+		int rand = random->rand_range(1, 101);
+		Timer* t = NULL;
+		for(auto& i: _game->getObjects())
+			if(i->getUniqueType() == "spawnTimer")
+				t = static_cast<Timer*>(i);
 
-		if(rand == 1)
+		if(rand >= 60 && rand <= 90)
 		{
-			WeaponPickup* pickup = new WeaponPickup(mX, mY, mReloadVisual);
+			WeaponPickup* pickup = new WeaponPickup(14, mX, mY, mReloadVisual);
 			_game->pushObject(pickup);
 		}
-		else if(rand == 2)
+		else if(rand >= 91 && rand <= 97)
 		{
-			HealthPickup* pickup = new HealthPickup(19, mX, mY);
+			WeaponPickup* pickup = new WeaponPickup(15, mX, mY, mReloadVisual);
 			_game->pushObject(pickup);
 		}
+		else if(rand >= 98 && t->getRound() > 40)
+		{
+			WeaponPickup* pickup = new WeaponPickup(13, mX, mY, mReloadVisual);
+			_game->pushObject(pickup);
+		}
+
+		HealthPickup* pickup = new HealthPickup(19, mX, mY);
+		_game->pushObject(pickup);
 
 		int coinRand = random->rand_range(1, 4);
 		for(unsigned i = 0; i < coinRand; i++)
 		{
-			CoinPickup* pickup = new CoinPickup(20, mX, mY);
+			CoinPickup* pickup = new CoinPickup(20, mX, mY + (45 * i));
 			_game->pushObject(pickup);
 		}
 

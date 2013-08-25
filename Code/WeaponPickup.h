@@ -8,7 +8,7 @@ using namespace Feanwork;
 class WeaponPickup : public Object, public Animation
 {
 public:
-	WeaponPickup(float _xPos, float _yPos, Object* _reloadVisual);
+	WeaponPickup(int _chosenID, float _xPos, float _yPos, Object* _reloadVisual);
 	~WeaponPickup();
 
 	bool update(Game* _game);
@@ -19,6 +19,8 @@ protected:
 	Object*		mReloadVisual;
 	std::string mFile;
 	int			mRandom;
+	int			mChosenID;
+	float		mCounter;
 };
 
 #endif

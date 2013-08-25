@@ -70,6 +70,13 @@ bool Weapon::update(Game* _game)
 				ss << "Clip: " << mClip << "/" << mClipCapacity;
 				Text* text = static_cast<Text*>(_game->getInterface()->getInterface(1, "clipText"));
 				text->setString(ss.str());
+				
+				if(mName == "FireballLauncher")
+					_game->playSound("fireball");
+				else if(mName == "Pistol")
+					_game->playSound("pistol");
+				else if(mName == "Shotgun")
+					_game->playSound("shotgun");
 			}
 		}
 	}
@@ -86,15 +93,25 @@ bool Weapon::update(Game* _game)
 
 	if(mReload && mReloadCount > mReloadTime)
 	{
-		mClipCapacity  -= mClipSize - mLastClip;
-		mClip			= mClipSize;
-		mReloadCount	= .0f;
-		mReload			= false;
+		int capacity = mClipSize - mLastClip;
+		if(capacity >= 0)
+			mClipCapacity  -= mClipSize - mLastClip;
+		else if(capacity < 0)
+			mClipCapacity = 0;
 
-		std::stringstream ss;
-		ss << "Clip: " << mClip << "/" << mClipCapacity;
-		Text* text = static_cast<Text*>(_game->getInterface()->getInterface(1, "clipText"));
-		text->setString(ss.str());
+		if(mClipCapacity > 0)
+		{
+			mClip			= mClipSize;
+			mReloadCount	= .0f;
+			mReload			= false;
+
+			std::stringstream ss;
+			ss << "Clip: " << mClip << "/" << mClipCapacity;
+			Text* text = static_cast<Text*>(_game->getInterface()->getInterface(1, "clipText"));
+			text->setString(ss.str());
+			_game->playSound("reload");
+			_game->playSound("reload");
+		}
 
 		if(mReloadVisual)
 			mReloadVisual->setActive(false);

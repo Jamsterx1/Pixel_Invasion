@@ -20,8 +20,14 @@ public:
 	void	switchWeapon(int _resourceID, std::string _weapon, Object* _reloadVisual, Game* _game);
 	Weapon* getWeapon();
 	void	resetTimer();
-	void	resetPlayer();
+	void	resetPlayer(Game* _game);
 	void	addScore(int _score, Game* _game);
+
+	void	saveHighScore(std::string _location);
+	int	    loadHighScore(std::string _location, Game* _game);
+
+	void setHighScore(int _score)
+		{ mHighScore = _score; }
 
 	void addDifficulty(float _diff)
 		{ mDifficulty += _diff; }
@@ -42,6 +48,7 @@ protected:
 	int		mHealth;
 	int		mHealthMax;
 	int		mScore;
+	int		mHighScore;
 	float	mDifficulty;
 	bool    mLose;
 	Weapon* mWeapon;

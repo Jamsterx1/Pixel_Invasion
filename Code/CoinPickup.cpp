@@ -27,6 +27,11 @@ bool CoinPickup::update(Game* _game)
 	velocity.x = (direction.x * _game->getDelta() * 10.f) * 25.f;
 	velocity.y = (direction.y * _game->getDelta() * 10.f) * 25.f;
 
+	Random* random = Random::get_singleton();
+	float r = random->rand_range(100.f, 250.f);
+	velocity.x * r;
+	velocity.y * r;
+
 	addPosition(velocity.x, velocity.y);
 	Object::update(_game);
 	return true;

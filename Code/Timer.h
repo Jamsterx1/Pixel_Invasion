@@ -19,6 +19,9 @@ public:
 	void setRound(int _round)
 		{ mRound = _round; }
 
+	int getRound()
+		{ return mRound; }
+
 protected:
 	int			mRound;
 	bool		mRoundSet;

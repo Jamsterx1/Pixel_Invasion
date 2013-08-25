@@ -1,1 +1,7 @@
+If the game is moaning about missing DLL's chances are it wants the VS redist for 2012, which you can grab here:
 http://www.microsoft.com/en-gb/download/details.aspx?id=30679
+
+-CONTROLS-
+WASD to move
+Left click to shoot
+Right click upon death to respawn and get back into the action

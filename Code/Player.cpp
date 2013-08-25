@@ -2,10 +2,11 @@
 #include "Feanwork/Game.h"
 #include "Timer.h"
 #include <sstream>
+#include <fstream>
 
 void reset(Game* _game)
 {
-	static_cast<Player*>(_game->getPlayer())->resetPlayer();
+	static_cast<Player*>(_game->getPlayer())->resetPlayer(_game);
 	for(auto& i: _game->getObjects())
 	{
 		if(i->getUniqueType() == "Enemy" || i->getUniqueType() == "Weapon")
@@ -35,6 +36,7 @@ Player::Player(int _resourceID, float _xPos, float _yPos, int _maxHealth, Object
 	mTimer		 = _timer;
 	mScore       = 0;
 	mDifficulty	 = 1.0f;
+	mHighScore	 = 0;
 }
 
 Player::~Player()
@@ -111,13 +113,24 @@ bool Player::update(Game* _game)
 		stringstream ss;
 		stringstream ss2;
 		stringstream ss3;
+		stringstream ss4;
 		ss << "GAME OVER!";
 		ss2 << "Press the right mouse button to play again";
 		ss3 << "Highscore: " << mScore;
+		ss4 << "Personal Best: " << mHighScore;
+
+		if(mScore > mHighScore)
+		{
+			saveHighScore("Resources/player.stats");
+			mHighScore = mScore;
+			ss4.clear();
+			ss4 << "Personal Best: " << mHighScore;
+		}
 
 		static_cast<Text*>(_game->getInterface()->getInterface(1, "gameOverText"))->setString(ss.str());
 		static_cast<Text*>(_game->getInterface()->getInterface(1, "replayText"))->setString(ss2.str());
 		static_cast<Text*>(_game->getInterface()->getInterface(1, "highscoreText"))->setString(ss3.str());
+		static_cast<Text*>(_game->getInterface()->getInterface(1, "personalText"))->setString(ss4.str());
 
 		if(_game->mousePressed("right"))
 			reset(_game);
@@ -195,7 +208,7 @@ void Player::resetTimer()
 	static_cast<Timer*>(mTimer)->reset();
 }
 
-void Player::resetPlayer()
+void Player::resetPlayer(Game* _game)
 {
 	mHealth		= mHealthMax;
 	mScore		= 0;
@@ -210,4 +223,29 @@ void Player::addScore(int _score, Game* _game)
 	stringstream ss;
 	ss << "Score: " << mScore;
 	static_cast<Text*>(_game->getInterface()->getInterface(1, "scoreText"))->setString(ss.str());
+}
+
+void Player::saveHighScore(std::string _location)
+{
+	std::ofstream stream(_location);
+	if(!stream.is_open())
+		return;
+
+	stream.write((char*)&mScore, sizeof(int));
+	stream.close();
+}
+
+int Player::loadHighScore(std::string _location, Game* _game)
+{
+	std::ifstream stream(_location);
+	if(!stream.is_open())
+		return -1;
+
+	stream.read((char*)&mHighScore, sizeof(int));
+	stringstream ss;
+	ss << "Personal Best: " << mHighScore;
+	static_cast<Text*>(_game->getInterface()->getInterface(1, "personalText"))->setString(ss.str());
+
+	stream.close();
+	return mHighScore;
 }

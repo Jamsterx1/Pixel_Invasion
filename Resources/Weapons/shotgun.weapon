@@ -1,7 +1,7 @@
 #Name Shotgun
 #ShootRate 0.1
-#ClipSize 3
-#ClipCapacity 20
-#Damage 80
+#ClipSize 8
+#ClipCapacity 100
+#Damage 120
 #ShootPoint 28, 7
-#ReloadTime 4.0
+#ReloadTime 2.5

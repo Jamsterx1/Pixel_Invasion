@@ -21,4 +21,7 @@
 #Resource 21, Sprites/fireballLauncher.png
 #Resource 22, Sprites/shotgun.png
 #Resource 23, Sprites/fireball.png
-
+#Resource 24, Sprites/10secs.png
+#Resource 25, Sprites/musicOff.png
+#Resource 26, Sprites/musicOn.png
+#Resource 27, Sprites/crosshair.png
