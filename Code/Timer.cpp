@@ -10,6 +10,7 @@ Timer::Timer(int _resourceID, float _xPos, float _yPos, std::string _anim, bool 
 	mName	  = _name;
 	mRound	  = 0;
 	mRoundSet = false;
+	Object::setUniqueType(_name);
 }
 
 Timer::~Timer()
@@ -35,7 +36,7 @@ bool Timer::update(Game* _game)
 	{
 		stringstream ss;
 		ss << "Lose Status: " << 1;
-
+		static_cast<Text*>(_game->getInterface()->getInterface(1, "loseText"))->setString(ss.str());
 	}
 
 	if(Animation::hasLooped())

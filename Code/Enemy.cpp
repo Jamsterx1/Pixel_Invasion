@@ -4,6 +4,9 @@
 #include "Bullet.h"
 #include "Player.h"
 #include "WeaponPickup.h"
+#include "HealthPickup.h"
+#include "CoinPickup.h"
+#include <sstream>
 
 Enemy::Enemy(int _resourceID, float _xPos, float _yPos, float _xVel, float _yVel, int _maxHealth, Object* _visual) :
 	Object(_resourceID, _xPos, _yPos, true),
@@ -25,15 +28,38 @@ bool Enemy::update(Game* _game)
 {
 	if(mHealth <= 0)
 	{
-		destroy();
-		/*Random* random = Random::get_singleton();
-		int rand = (int)random->rand_range(1, 1);
+		
+		Random* random = Random::get_singleton();
+		int rand = (int)random->rand_range(1, 3);
 
-		/*if(rand == 1)
-		{*/
+		if(rand == 1)
+		{
 			WeaponPickup* pickup = new WeaponPickup(mX, mY, mReloadVisual);
 			_game->pushObject(pickup);
-		//}
+		}
+		else if(rand == 2)
+		{
+			HealthPickup* pickup = new HealthPickup(19, mX, mY);
+			_game->pushObject(pickup);
+		}
+
+		int coinRand = random->rand_range(1, 4);
+		for(unsigned i = 0; i < coinRand; i++)
+		{
+			CoinPickup* pickup = new CoinPickup(20, mX, mY);
+			_game->pushObject(pickup);
+		}
+
+		// Score
+		Player* player = static_cast<Player*>(_game->getPlayer());
+		sf::Vector2f playerPositon = _game->getPlayer()->getPosition();
+		double distance = sqrt((playerPositon.x - mX) * (playerPositon.x - mX) + (playerPositon.y - mY) * (playerPositon.y - mY));
+
+		float scoreRand = random->rand_range(0.3f, 0.7f);
+		player->addScore(1000 - distance * scoreRand, _game);
+
+		// Destroy
+		destroy();
 	}
 
 	if(mAIState == AISTATE_Pursue)
@@ -57,7 +83,7 @@ bool Enemy::update(Game* _game)
 		distance.x = _game->getPlayer()->getPosition().x - mX;
 		distance.y = _game->getPlayer()->getPosition().y - mY;
 
-		if(abs(distance.x) < 10.f && abs(distance.y) < 10.f)
+		if(abs(distance.x) < 25.f && abs(distance.y) < 25.f)
 			mAIState = AISTATE_Attack;
 	}
 	else if(mAIState == AISTATE_Attack)
@@ -69,8 +95,9 @@ bool Enemy::update(Game* _game)
 		Player* player = static_cast<Player*>(_game->getPlayer());
 		distance.x = (player->getPosition().x + player->getAABB().width) - (mX + mAABB.width);
 		distance.y = (player->getPosition().y + player->getAABB().height) - (mY + mAABB.height);
+		player->damage(1);
 
-		if(abs(distance.x) > 10.f && abs(distance.y) > 10.f)
+		if(abs(distance.x) > 25.f && abs(distance.y) > 25.f)
 			mAIState = AISTATE_Pursue;
 	}
 

@@ -6,11 +6,11 @@
 
 WeaponPickup::WeaponPickup(float _xPos, float _yPos, Object* _reloadVisual) :
 	Object(0, _xPos, _yPos, true),
-	Animation(this, "Resources/Animation/pickup.anim", 0.5f, true)
+	Animation(this, "Resources/Animation/pickup.anim", 0.1f, true)
 {
 	Random* random = Random::get_singleton();
 	mReloadVisual = _reloadVisual;
-	mRandom = (int)random->rand_range(13, 15);
+	mRandom = (int)random->rand_range(13, 16);
 
 	if(mRandom == 13)
 	{

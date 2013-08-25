@@ -24,7 +24,7 @@ bool Bullet::update(Game* _game)
 	mLifeCounter += _game->getDelta();
 	addPosition(mVelocity.x * _game->getDelta(), mVelocity.y * _game->getDelta());
 
-	if(mLifeCounter >= mLife)
+	if(mLifeCounter >= mLife || mY < 350)
 		destroy();
 
 	return true;

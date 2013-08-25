@@ -16,6 +16,9 @@ public:
 	void collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object* _collision, Game* _game);
 	void reset();
 
+	void setRound(int _round)
+		{ mRound = _round; }
+
 protected:
 	int			mRound;
 	bool		mRoundSet;

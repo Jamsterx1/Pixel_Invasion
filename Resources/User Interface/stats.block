@@ -1,8 +1,13 @@
-#Boundaries  0,  0, 160, 150
-#Text 0, 0, 16, Wave: 0, waveText
-#Text 0, 20, 16, Score: 0, scoreText
-#Text 0, 40, 16, Lose Status: 0, loseText
+#Boundaries  0,  0, 160, 180
+#Text 0, 0, 16, Health: 100, healthText
+#Text 0, 20, 16, Wave: 0, waveText
+#Text 0, 40, 16, Score: 0, scoreText
+#Text 0, 60, 16, Lose Status: 0, loseText
 
-#Text 0, 80, 16, Weapon: Pistol, weaponText
-#Text 0, 100, 16, Clip: 0/0, clipText
-#Text 0, 120, 16, Weapon Damage: 0, damageText
+#Text 0, 100, 16, Weapon: Pistol, weaponText
+#Text 0, 120, 16, Clip: 0/0, clipText
+#Text 0, 140, 16, Weapon Damage: 0, damageText
+
+#Text 500, 0, 34,  , gameOverText
+#Text 420, 40, 20,  , replayText
+#Text 520, 60, 20,  , highscoreText

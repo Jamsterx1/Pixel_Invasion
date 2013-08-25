@@ -3,14 +3,38 @@
 #include "Timer.h"
 #include <sstream>
 
+void reset(Game* _game)
+{
+	static_cast<Player*>(_game->getPlayer())->resetPlayer();
+	for(auto& i: _game->getObjects())
+	{
+		if(i->getUniqueType() == "Enemy" || i->getUniqueType() == "Weapon")
+			i->destroy();
+		else if(i->getUniqueType() == "spawnTimer")
+		{
+			Timer* t = static_cast<Timer*>(i);
+			t->reset();
+			t->setRound(0);
+		}
+	}
+
+	static_cast<Text*>(_game->getInterface()->getInterface(1, "waveText"))->setString("Wave: 1");
+	static_cast<Text*>(_game->getInterface()->getInterface(1, "scoreText"))->setString("Score: 0");
+	static_cast<Text*>(_game->getInterface()->getInterface(1, "gameOverText"))->setString("");
+	static_cast<Text*>(_game->getInterface()->getInterface(1, "replayText"))->setString("");
+	static_cast<Text*>(_game->getInterface()->getInterface(1, "highscoreText"))->setString("");
+}
+
 Player::Player(int _resourceID, float _xPos, float _yPos, int _maxHealth, Object* _timer) :
 	Object(_resourceID, _xPos, _yPos, false),
 	Animation(this, "Resources/Animation/player.anim")
 {
 	mHealth	     = _maxHealth;
 	mHealthMax   = _maxHealth;
-	mDead	     = false;
+	mLose	     = false;
 	mTimer		 = _timer;
+	mScore       = 0;
+	mDifficulty	 = 1.0f;
 }
 
 Player::~Player()
@@ -20,66 +44,96 @@ Player::~Player()
 bool Player::update(Game* _game)
 {
 	// Input
-	bool idle = true;
-	if(_game->keyPressed("w"))
+	if(!mLose)
 	{
-		idle = false;
-		sf::Vector2f movement(.0f, -.2f * (_game->getDelta() * 1000.f));
-		addPosition(movement.x, movement.y);
+		bool idle = true;
+		if(_game->keyPressed("w"))
+		{
+			idle = false;
+			sf::Vector2f movement(.0f, -.2f * (_game->getDelta() * 1000.f));
+			addPosition(movement.x, movement.y);
+		}
+		else if(_game->keyPressed("s"))
+		{
+			idle = false;
+			sf::Vector2f movement(.0f,  .2f * (_game->getDelta() * 1000.f));
+			addPosition(movement.x, movement.y);
+		}
+
+		if(_game->keyPressed("a"))
+		{
+			idle = false;
+			sf::Vector2f movement(-.3f  * (_game->getDelta() * 1000.f), .0f);
+			addPosition(movement.x, movement.y);
+		}
+		else if(_game->keyPressed("d"))
+		{
+			idle = false;
+			sf::Vector2f movement( .3f  * (_game->getDelta() * 1000.f), .0f);
+			addPosition(movement.x, movement.y);
+		} 
+
+		if(idle == true)
+			Animation::changeAnim("idle");
+		else
+			Animation::changeAnim("forward");
+
+		// Keep player in boundaries
+		if(mX < .0f && (mY + mAABB.height * 2) > _game->getHeight())
+		{
+			mX = .0f;
+			mY = _game->getHeight() - (mAABB.height * 2);
+		}
+		else if((mX + mAABB.width * 2) > _game->getWidth() && (mY + mAABB.height * 2) > _game->getHeight())
+		{
+			mX = _game->getWidth() - mAABB.width * 2;
+			mY = _game->getHeight() - (mAABB.height * 2);
+		}
+		else if(mY < 350)
+			mY = 350;
+		else if((mX + mAABB.width * 2) > _game->getWidth())
+			mX = _game->getWidth() - mAABB.width * 2;
+		else if(mX < .0f)
+			mX = .0f;
+		else if((mY + mAABB.height * 2) > _game->getHeight())
+			mY = _game->getHeight() - mAABB.height * 2;
+		else if(mY < .0f)
+			mY = .0f;
+
+		if(mWeapon)
+		{
+			mWeapon->setPosition(mX, mY);
+			mWeapon->update(_game);
+		}
 	}
-	else if(_game->keyPressed("s"))
+	else if(mLose)
 	{
-		idle = false;
-		sf::Vector2f movement(.0f,  .2f * (_game->getDelta() * 1000.f));
-		addPosition(movement.x, movement.y);
+		stringstream ss;
+		stringstream ss2;
+		stringstream ss3;
+		ss << "GAME OVER!";
+		ss2 << "Press the left mouse button to play again";
+		ss3 << "Highscore: " << mScore;
+
+		static_cast<Text*>(_game->getInterface()->getInterface(1, "gameOverText"))->setString(ss.str());
+		static_cast<Text*>(_game->getInterface()->getInterface(1, "replayText"))->setString(ss2.str());
+		static_cast<Text*>(_game->getInterface()->getInterface(1, "highscoreText"))->setString(ss3.str());
+
+		if(_game->mousePressed("left"))
+			reset(_game);
 	}
 
-	if(_game->keyPressed("a"))
-	{
-		idle = false;
-		sf::Vector2f movement(-.3f  * (_game->getDelta() * 1000.f), .0f);
-		addPosition(movement.x, movement.y);
-	}
-	else if(_game->keyPressed("d"))
-	{
-		idle = false;
-		sf::Vector2f movement( .3f  * (_game->getDelta() * 1000.f), .0f);
-		addPosition(movement.x, movement.y);
-	} 
+	stringstream ss;
+	ss << "Health: " << mHealth;
+	static_cast<Text*>(_game->getInterface()->getInterface(1, "healthText"))->setString(ss.str());
 
-	if(idle == true)
-		Animation::changeAnim("idle");
-	else
-		Animation::changeAnim("forward");
-
-	// Keep player in boundaries
-	if(mX < .0f && (mY + mAABB.height * 2) > _game->getHeight())
+	if(static_cast<Timer*>(mTimer)->hasLooped() || mHealth < 0)
 	{
-		mX = .0f;
-		mY = _game->getHeight() - (mAABB.height * 2);
+		stringstream ss2;
+		ss2 << "Lose Status: " << 1;
+		static_cast<Text*>(_game->getInterface()->getInterface(1, "loseText"))->setString(ss2.str());
+		mLose = true;
 	}
-	else if((mX + mAABB.width * 2) > _game->getWidth() && (mY + mAABB.height * 2) > _game->getHeight())
-	{
-		mX = _game->getWidth() - mAABB.width * 2;
-		mY = _game->getHeight() - (mAABB.height * 2);
-	}
-	else if((mX + mAABB.width * 2) > _game->getWidth())
-		mX = _game->getWidth() - mAABB.width * 2;
-	else if(mX < .0f)
-		mX = .0f;
-	else if((mY + mAABB.height * 2) > _game->getHeight())
-		mY = _game->getHeight() - mAABB.height * 2;
-	else if(mY < .0f)
-		mY = .0f;
-
-	if(mWeapon)
-	{
-		mWeapon->setPosition(mX, mY);
-		mWeapon->update(_game);
-	}
-
-	if(static_cast<Timer*>(mTimer)->hasLooped())
-		; // Lose!
 
 	Animation::update(_game);
 	Object::update(_game);
@@ -139,4 +193,21 @@ Weapon* Player::getWeapon()
 void Player::resetTimer()
 {
 	static_cast<Timer*>(mTimer)->reset();
+}
+
+void Player::resetPlayer()
+{
+	mHealth		= mHealthMax;
+	mScore		= 0;
+	mLose		= false;
+	mDifficulty	= 1.0f;
+	static_cast<Timer*>(mTimer)->reset();
+}
+
+void Player::addScore(int _score, Game* _game)
+{
+	mScore += _score;
+	stringstream ss;
+	ss << "Score: " << mScore;
+	static_cast<Text*>(_game->getInterface()->getInterface(1, "scoreText"))->setString(ss.str());
 }

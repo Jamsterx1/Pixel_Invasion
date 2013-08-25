@@ -14,6 +14,7 @@ public:
 	bool update(Game* _game);
 	bool render(Game* _game);
 	void collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object* _collision, Game* _game);
+	std::vector<Object*> spawn(int _amount, Game* _game);
 
 protected:
 	float   mSpawnTime;
