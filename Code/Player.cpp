@@ -35,7 +35,7 @@ Player::Player(int _resourceID, float _xPos, float _yPos, int _maxHealth, Object
 	mLose	     = false;
 	mTimer		 = _timer;
 	mScore       = 0;
-	mDifficulty	 = 2.f;
+	mDifficulty	 = 1.0f;
 	mHighScore	 = 0;
 }
 
