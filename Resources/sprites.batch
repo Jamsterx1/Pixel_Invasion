@@ -17,5 +17,6 @@
 #Resource 17, Sprites/startButton.png
 #Resource 18, Sprites/titleScreen.png
 #Resource 19, Sprites/healthPickup.png
-#Resource 20, Sprites/coint.png
-
+#Resource 20, Sprites/coin.png
+#Resource 21, Sprites/fireballLauncher.png
+#Resource 22, Sprites/shotgun.png

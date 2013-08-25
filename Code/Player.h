@@ -26,6 +26,9 @@ public:
 	void addDifficulty(float _diff)
 		{ mDifficulty += _diff; }
 
+	float getDifficulty()
+		{ return mDifficulty; }
+
 	void addHealth(int _health)
 		{ mHealth += _health; }
 

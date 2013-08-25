@@ -31,6 +31,7 @@ bool Timer::update(Game* _game)
 		mRoundSet = true;
 		Weapon* wep = static_cast<Player*>(_game->getPlayer())->getWeapon();
 		wep->decreaseDamage();
+		static_cast<Player*>(_game->getPlayer())->addDifficulty(0.2f);
 	}
 	else if(mName == "killTimer" && Animation::hasLooped())
 	{

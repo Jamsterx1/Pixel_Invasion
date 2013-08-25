@@ -48,12 +48,12 @@ void startGame(Game* _game)
 	_game->setVolume(70.f);
 
 	std::vector<Object*> shipSpawn;
-	shipSpawn = ship->spawn(4, _game);
+	shipSpawn = ship->spawn(1, _game);
 	for(auto& i: shipSpawn)
 		gameObjs.push_back(i);
 
 	std::vector<Object*> shipSpawn2;
-	shipSpawn2 = ship2->spawn(4, _game);
+	shipSpawn2 = ship2->spawn(1, _game);
 	for(auto& i: shipSpawn2)
 		gameObjs.push_back(i);
 

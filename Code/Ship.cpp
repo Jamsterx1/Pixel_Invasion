@@ -3,6 +3,7 @@
 #include "Feanwork/Random.h"
 #include "Enemy.h"
 #include "Timer.h"
+#include "Player.h"
 
 Ship::Ship(int _resourceID, float _xPos, float _yPos, Object* _timer, Object* _visual) :
 	Object(_resourceID, _xPos, _yPos, true)
@@ -18,10 +19,15 @@ Ship::~Ship()
 
 bool Ship::update(Game* _game)
 {
-	if(mSpawnTime < 7.2f && mSpawnTime > 6.8f)
+	if(mSpawnTime < 7.1f && mSpawnTime > 6.9f)
 		static_cast<Timer*>(mTimer)->reset();
 	if(mSpawnTime >= 10.f)
-		spawn(4, _game);
+	{
+		mSpawnTime = .0f;
+		Player* player = static_cast<Player*>(_game->getPlayer());
+		int s = (int)player->getDifficulty();
+		spawn(s, _game);
+	}
 	else
 		mSpawnTime += _game->getDelta();
 
@@ -41,7 +47,6 @@ void Ship::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object* 
 
 std::vector<Object*> Ship::spawn(int _amount, Game* _game)
 {
-	mSpawnTime = .0f;
 	std::vector<Object*> objects;
 	for(unsigned i = 0; i < _amount; i++)
 	{
